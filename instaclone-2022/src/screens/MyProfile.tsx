@@ -1,10 +1,10 @@
-import React,{useState,useRef} from 'react'
+import React,{useState} from 'react'
 import NavbarComponent from '../components/Auth/Navbar'
 import { Button } from 'antd';
 import { Link } from "react-router-dom";
 import {AiOutlineTable} from 'react-icons/ai'
 import {AiOutlineSave} from 'react-icons/ai'
-import {MdDisabledVisible, MdOutlinePhotoCameraFront} from 'react-icons/md'
+import {MdOutlinePhotoCameraFront} from 'react-icons/md'
 import {BsInfoCircle} from  'react-icons/bs'
 import {Modal} from 'react-bootstrap'
 import { authService } from '../fbase'
@@ -14,13 +14,9 @@ import "./myprofile.css"
 
 function MyprofilePage() {
     const [show, setShow] = useState(false);
-    const modalRef = useRef<HTMLInputElement>(null);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleOpenModal = () => {
-        modalRef.current && modalRef.current.click()
-    }
     const handleLogout = ()=>{ //로그아웃
         authService.signOut()
     }
@@ -32,9 +28,8 @@ function MyprofilePage() {
                     <div className="item" style={{ marginLeft: '550px', height: '200px', width: '260px' }} ><img src="img/profile_image.jpg" width={150} /></div>
                     <div className="item" style={{ height: '200px', width: '300px' }}>
                         <span style={{ fontSize: '30px', fontWeight: 'lighter' }}>dltpwjd123</span>
-                        <Button className="profile_button"style={{ position: 'absolute', left: '970px', top: '115px' }}><Link to="/myprofile-setting">프로필 편집</Link></Button>
-                        <BsInfoCircle style={{ cursor: 'pointer', position: 'absolute', left: '1090px', top: '120px' }} size={25} onClick={handleOpenModal} />
-                        <Button onClick={handleShow} ref={modalRef} style={{ display: 'none' }}></Button>
+                        <Button className="profile_button"style={{ position: 'absolute', left: '970px', top: '115px' }}><Link to="/">프로필 편집</Link></Button>
+                        <BsInfoCircle style={{ cursor: 'pointer', position: 'absolute', left: '1090px', top: '120px' }} size={25} onClick={handleShow}/>
                         <p style={{ fontSize: '17px', marginTop: '15px' }}>게시물 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로워 0
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로우 43</p>
                         <p style={{ fontWeight: 'bold', fontSize: '17px' }}>이세정</p>
@@ -52,7 +47,7 @@ function MyprofilePage() {
                     <div style={{ width: '560px', backgroundColor: 'white' }}>
                     </div>
                 </div>
-                <Modal className="modal" show={show} onHide={handleClose} style={{ marginTop: '230px',marginLeft: '750px',width: '390px',backgroundColor:"gray" }}>
+                <Modal className="modal" show={show} onHide={handleClose} style={{ marginTop: '230px',marginLeft: '750px',width: '390px' }}>
                     <div style={{borderRadius:"35px"}}>
                         <div className='modal1' style={{ height: "45px", borderBottom: "1px solid rgb(200, 200, 200)", textAlign: "center", paddingTop: "10px", cursor: "pointer" }}>비밀번호 변경</div>
                         <div className='modal2' style={{ height: "45px", borderBottom: "1px solid rgb(200, 200, 200)", textAlign: "center", paddingTop: "10px", cursor: "pointer" }}>네임 태그</div>
@@ -74,14 +69,4 @@ function MyprofilePage() {
 export default MyprofilePage
 
 
-{/* <Modal show={show} onHide={handleClose} style={{ marginTop: '230px' }}>
-<Modal.Header closeButton>
-    <Modal.Title>Modal</Modal.Title>
-</Modal.Header>
-<Modal.Body>
-    <p>Modal body text goes here.</p>
-</Modal.Body>
-<Modal.Footer>
-    <Button>Close</Button>
-</Modal.Footer>
-</Modal> */}
+

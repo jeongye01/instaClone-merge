@@ -19,20 +19,20 @@ const firebaseConfig = {
   storageBucket:process.env.REACT_APP_storageBucket ,
   messagingSenderId:process.env.REACT_APP_messagingSenderId ,
   appId:process.env.REACT_APP_appId,
-  measurementId:process.env.REACT_APP_measurementId 
+  measurementId: process.env.REACT_APP_measurementId
 };
 
 firebase.initializeApp(firebaseConfig);
-export const authService=firebase.auth();
-export const faceBookLogin=async()=>{
+export const authService = firebase.auth();
+export const faceBookLogin = async () => {
   const provider = new FacebookAuthProvider();
   const auth = getAuth();
-  try{ 
-    const result=await signInWithPopup(auth, provider);
-    const {user}=result;
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
     const credential = FacebookAuthProvider.credentialFromResult(result);
     const accessToken = credential?.accessToken;
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 }
