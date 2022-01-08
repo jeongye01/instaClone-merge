@@ -6,7 +6,6 @@ type actionType = {
 }
 
 export default function (state = {}, action :actionType) {
-    console.log(action.payload)
     switch (action.type) {
         case SET_USER:
             return {

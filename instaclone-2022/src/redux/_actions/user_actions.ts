@@ -1,7 +1,8 @@
 import { SET_USER ,CLEAR_USER } from './types';
 
 
-type userType = {}
+type userType = {
+}
 
 export function setUser(user:userType){
     return{

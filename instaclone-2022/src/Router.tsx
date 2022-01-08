@@ -16,6 +16,7 @@ function Router() {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user)
         setIsLoggedIn(true);
         dispatch(setUser(user)) //리덕스에 user정보 전달
       } else {
