@@ -30,6 +30,6 @@
 }
 .profile_button:hover{
     color :black;
-    border: 1px solid rgb(204, 203, 203);
-    color :rgb(55, 101, 255);
+    border: 1px solid rgb(216, 214, 214);
+    color: rgb(214, 206, 206)
 }
