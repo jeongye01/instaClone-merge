@@ -20,9 +20,10 @@ import { setUser } from '../redux/_actions/user_actions';
 
 
 function MyprofilePage() {
-    // const user = useSelector((state:RootState) => state.user.currentUser)
+    //const user = useSelector((state:RootState) => state.user.currentUser)
     const [show, setShow] = useState(false);
     const [tab,setTab] = useState(0)
+    const [userUid,setUserUid] = useState("")
     const [name,setName] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -32,8 +33,9 @@ function MyprofilePage() {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        if(typeof user.displayName === "string"){
+        if(typeof user.uid === "string" &&typeof user.displayName === "string"){
             setName(user.displayName)
+            setUserUid(user.uid)
         }
       }
     })
@@ -53,13 +55,13 @@ function MyprofilePage() {
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로우 43</p>
                     </div>
                 </div>
-                <div style={{ height: '50px', width: '940px', margin: 'auto', borderTop: '1px solid rgb(200, 200, 200)', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ height: '50px', width: '930px', margin: 'auto', borderTop: '1px solid rgb(200, 200, 200)', display: 'flex', justifyContent: 'center' }}>
                     <div style={{ cursor: 'pointer', height: '30px', width: '100px', marginTop: '15px', marginLeft: '15px', fontSize: '13px' }} onClick={()=>{setTab(0)}}><AiOutlineTable />&nbsp;게시물</div>
                     <div style={{ cursor: 'pointer', height: '30px', width: '100px', marginTop: '15px', marginLeft: '15px', fontSize: '13px' }} onClick={() => {setTab(1)}}><HiOutlinePhotograph size={15} />&nbsp;사진</div>
                     <div style={{ cursor: 'pointer', height: '30px', width: '100px', marginTop: '15px', marginLeft: '10px', fontSize: '13px' }} onClick={() => {setTab(2)}}><RiVideoLine size={15} />&nbsp;동영상</div>
                 </div>
                 {
-                    tab===0 ? <Post/> : 
+                    tab===0 ? <Post uid={userUid}/> : 
                     tab===1 ? <Photo/> : <Video/>
                 }
                 <Modal className="modal" show={show} onHide={handleClose} style={{ marginTop: '230px', marginLeft: '750px', width: '390px' }}>

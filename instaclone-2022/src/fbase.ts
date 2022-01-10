@@ -2,7 +2,9 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import "firebase/compat/database";
 import { getAuth, signInWithPopup, FacebookAuthProvider,onAuthStateChanged  } from "firebase/auth";
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,6 +22,8 @@ const firebaseConfig = {
   databaseURL: "https://instagram-aaebd-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
+
+
 firebase.initializeApp(firebaseConfig);
 export const authService = firebase.auth();
 export const faceBookLogin = async () => {
@@ -35,6 +39,8 @@ export const faceBookLogin = async () => {
   }
 }
 export const storageService = firebase.storage();
+export const databaseService = firebase.database();
+export default firebase
 
 
 
