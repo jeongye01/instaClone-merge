@@ -1,46 +1,49 @@
-import { off } from 'process';
-import React,{useRef,useState,useEffect} from 'react'
-import { storageService, databaseService } from '../../fbase';
-import { authService } from '../../fbase'
+//import { off } from 'process';
+import React,{useState,useEffect} from 'react'
+import { databaseService } from '../../fbase';
+import {useSelector} from 'react-redux'
+import {RootState} from '../../redux/_reducers'
 
 
 
-type UidProps = {
-    uid: string;
-  };
 
-function Post({uid}:UidProps) : React.ReactElement {
+function Post(){
+    const user = useSelector((state:RootState) => state.user.currentUser)
     const fileDatabase = databaseService.ref("fileUpload")
     const [posts, setPosts] = useState([])
-    const [userUid,setUserUid] = useState("")
-    const [userName,setUserName] = useState("")
-
 
     useEffect(() => {
-        if (uid) {
-            addPostListeners(uid)
-        }
-
+        addPostListeners()
     }, [])
 
-    const addPostListeners = (uid:string) => {
+    const addPostListeners = () => {
         let postsData: any = []
-        fileDatabase.child(uid).on("child_added", data => {
+        fileDatabase.child(user.uid).on("child_added", data => {
             postsData.push(data.val())
-            setPosts(postsData)
+            console.log(postsData)
         })
+        setPosts(postsData)
     }
 
-    const rederPostCard = (posts:any[]) =>
-        posts.map(post => 
-            <div style={{width:"290px",height:"300px"}}><img src={post.fileUrl} width={290} height={300}/></div>
+    const rederPostCard = (posts: any[]) =>
+        posts.map(post => {
+            switch(post.fileType){
+                case "image/jpeg" : {
+                    return <div style={{ width: "290px", height: "300px" }}><img src={post.fileUrl} width={290} height={300} /></div>
+                }
+                case "video/mp4" : {
+                    return <div style={{ width: "290px", height: "300px",backgroundColor:"red" }}><video src={post.fileUrl} width={290} /></div>
+                }
+            }
+        }
         )
-        
+
+
     return (
         <div>
             {
-                posts.length>0?
-                    <div style={{ width: '930px', margin: 'auto', display: 'grid',gridTemplateColumns:'1fr 1fr 1fr',rowGap:'30px',columnGap:'30px'}} >
+                posts.length>0 ?
+                    <div style={{ width: '930px', margin: 'auto', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', rowGap: '30px', columnGap: '30px' }} >
                         {rederPostCard(posts)}
                     </div>
                     :

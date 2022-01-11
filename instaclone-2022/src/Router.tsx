@@ -16,12 +16,12 @@ function Router() {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user)
-        setIsLoggedIn(true);
         dispatch(setUser(user)) //리덕스에 user정보 전달
+        setIsLoggedIn(true);
+        
       } else {
-        setIsLoggedIn(false)
         dispatch(clearUser()) //리덕스에 user정보 지워주기
+        setIsLoggedIn(false)
       }
       setInit(true);
     })

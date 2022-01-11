@@ -15,31 +15,23 @@ import Photo from '../components/Auth/Photo'
 import Video from '../components/Auth/Video'
 import {useSelector} from 'react-redux'
 import {RootState} from '../redux/_reducers'
-import { setUser } from '../redux/_actions/user_actions';
+
 
 
 
 function MyprofilePage() {
-    //const user = useSelector((state:RootState) => state.user.currentUser)
+    const user = useSelector((state:RootState) => state.user.currentUser)
     const [show, setShow] = useState(false);
     const [tab,setTab] = useState(0)
-    const [userUid,setUserUid] = useState("")
-    const [name,setName] = useState("")
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleLogout = ()=>{ //로그아웃
+    const handleLogout = () => { //로그아웃
         authService.signOut()
     }
-  useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        if(typeof user.uid === "string" &&typeof user.displayName === "string"){
-            setName(user.displayName)
-            setUserUid(user.uid)
-        }
-      }
-    })
-  }, []);
+
+
+
 
     return (
         <>
@@ -48,7 +40,7 @@ function MyprofilePage() {
                 <div className="profile_container" style={{ marginTop: '35px', display: 'flex' }}>
                     <div className="item" style={{ marginLeft: '550px', height: '200px', width: '260px' }} ><img src="img/profile_image.jpg" width={150} /></div>
                     <div className="item" style={{ height: '200px', width: '300px' }}>
-                        <span style={{ fontSize: '30px', fontWeight: 'lighter' }}>{name}</span>
+                        <span style={{ fontSize: '30px', fontWeight: 'lighter' }}>{user&&user.displayName}</span>
                         <Button className="profile_button" style={{ marginLeft:'20px' }}><Link to="/myprofile-setting">프로필 편집</Link></Button>
                         <BsInfoCircle style={{ cursor: 'pointer', marginLeft:'10px' }} size={25} onClick={handleShow}/>
                         <p style={{ fontSize: '17px', marginTop: '15px' }}>게시물 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로워 0
@@ -61,7 +53,7 @@ function MyprofilePage() {
                     <div style={{ cursor: 'pointer', height: '30px', width: '100px', marginTop: '15px', marginLeft: '10px', fontSize: '13px' }} onClick={() => {setTab(2)}}><RiVideoLine size={15} />&nbsp;동영상</div>
                 </div>
                 {
-                    tab===0 ? <Post uid={userUid}/> : 
+                    tab===0 ? <Post/> : 
                     tab===1 ? <Photo/> : <Video/>
                 }
                 <Modal className="modal" show={show} onHide={handleClose} style={{ marginTop: '230px', marginLeft: '750px', width: '390px' }}>

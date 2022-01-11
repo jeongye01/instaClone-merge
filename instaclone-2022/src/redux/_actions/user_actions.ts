@@ -1,10 +1,8 @@
 import { SET_USER ,CLEAR_USER } from './types';
 
 
-type userType = {
-}
 
-export function setUser(user:userType){
+export function setUser(user:any){
     return{
         type:SET_USER,
         payload:user

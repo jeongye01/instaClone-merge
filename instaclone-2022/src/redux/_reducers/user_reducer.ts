@@ -1,11 +1,18 @@
 import { SET_USER ,CLEAR_USER} from '../_actions/types'
 
-type actionType = {
-    type:string,
-    payload:{}
-}
+// 이 리덕스 모듈에서 관리 할 상태의 타입을 선언합니다
+type CounterState  = {
+    currentUser: {}
+  };
+  
+  // 초기상태를 선언합니다.
+  const initialState: CounterState = {
+    currentUser: {}
+  };
 
-export default function (state = {}, action :actionType) {
+
+
+export default function (state:CounterState = initialState, action :any) {
     switch (action.type) {
         case SET_USER:
             return {
