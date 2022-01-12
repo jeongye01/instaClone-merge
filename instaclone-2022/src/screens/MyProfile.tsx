@@ -30,9 +30,6 @@ function MyprofilePage() {
         authService.signOut()
     }
 
-
-
-
     return (
         <>
             <div style={{minHeight:"850px"}}>
@@ -40,9 +37,9 @@ function MyprofilePage() {
                 <div className="profile_container" style={{ marginTop: '35px', display: 'flex' }}>
                     <div className="item" style={{ marginLeft: '550px', height: '200px', width: '260px' }} ><img src="img/profile_image.jpg" width={150} /></div>
                     <div className="item" style={{ height: '200px', width: '300px' }}>
-                        <span style={{ fontSize: '30px', fontWeight: 'lighter' }}>{user&&user.displayName}</span>
-                        <Button className="profile_button" style={{ marginLeft:'20px' }}><Link to="/myprofile-setting">프로필 편집</Link></Button>
-                        <BsInfoCircle style={{ cursor: 'pointer', marginLeft:'10px' }} size={25} onClick={handleShow}/>
+                        <span style={{ fontSize: '25px', fontWeight: 'lighter' }}>{user&&user.displayName}</span>
+                        <Button className="profile_button" style={{ marginLeft:'15px' }}><Link to="/myprofile-setting">프로필 편집</Link></Button>
+                        <BsInfoCircle style={{ cursor: 'pointer', marginLeft:'15px' }} size={25} onClick={handleShow}/>
                         <p style={{ fontSize: '17px', marginTop: '15px' }}>게시물 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로워 0
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;팔로우 43</p>
                     </div>

@@ -20,11 +20,6 @@ import { Button,Switch } from 'antd';
 import {storageService,databaseService} from '../../fbase';
 import firebase from '../../fbase'
 
-
-
-
-
-
 function NavbarComponent() {
     const [showUploadModal, setShowUploadModal] = useState(false);
     const fileUploadRef = useRef<HTMLInputElement>(null);
@@ -162,12 +157,12 @@ function NavbarComponent() {
 
     return (
         <div style={{ border: "0.5px solid rgb(200, 200, 200)",backgroundColor:"white" }}>
-            <Container style={{ display: 'flex', justifyContent: 'center', margin: 'auto', marginLeft: '470px', backgroundColor: 'white',marginTop: '5px' }}>
-                <Navbar.Brand><Link to="/"><img src="img/instagram_logo.png" width={110} /></Link></Navbar.Brand>
-                <Form className="d-flex" style={{ width: '310px', marginLeft: '210px' , height: '30px',marginTop:'11px' }}>
-                    <FormControl type="search" placeholder="검색" className="me-5" aria-label="Search" />
+            <Container style={{ display: 'flex', justifyContent: 'center', margin: 'auto', marginLeft: '470px', backgroundColor: 'white',marginTop: '5px',height:"53px" }}>
+                <Navbar.Brand><Link to="/"><img src="img/instaLogo.png" style={{marginTop:"5px"}}/></Link></Navbar.Brand>
+                <Form className="d-flex" style={{ width: '310px', marginTop:'7px' , marginLeft: '210px' , height: '40px'  }}>
+                    <FormControl type="search" placeholder="검색" className="me-5" aria-label="Search" style={{backgroundColor:"rgb(236, 236, 236)",marginBottom:"5px", borderRadius:"6px"}}/>
                 </Form>
-                <Nav className="me-auto" style={{ marginLeft: '30px' }}>
+                <Nav className="me-auto" style={{ margin:'5px 0 0 30px' }}>
                     <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><GrHomeRounded size="23" color='black' /></Link></Nav.Link>
                     <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><FaRegPaperPlane size="23" color='black' /></Link></Nav.Link>
                     <Nav.Link style={{ marginRight: "-10px" }} onClick={handleShowUploadModal}><FiPlusSquare size="25" color='black' /></Nav.Link>
