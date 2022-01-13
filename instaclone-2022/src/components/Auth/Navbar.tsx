@@ -206,7 +206,7 @@ function NavbarComponent() {
                                             <GoLocation style={{marginLeft:"100px"}}/>
                                         </div>
                                         <div style={accessibilitySize} >
-                                            <div style={{ padding: "8px 15px", fontSize: "16px" ,cursor:"pointer"}} onClick={handleAccessibilitySize}>
+                                            <div style={{ padding: "8px 14px", fontSize: "16px" ,cursor:"pointer"}} onClick={handleAccessibilitySize}>
                                                 접근성 {acessibilityArrow ? <RiArrowDownSLine size={25} style={{marginLeft:"232px"}}/> : <RiArrowUpSLine size={25} style={{marginLeft:"232px"}}/> }
                                             </div>
                                             <div style={accessibilityToggle}>

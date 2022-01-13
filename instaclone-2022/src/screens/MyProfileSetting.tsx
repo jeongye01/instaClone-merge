@@ -1,6 +1,12 @@
 import React,{useState} from 'react'
 import NavbarComponent from '../components/Auth/Navbar'
 import EditProfile from '../components/Auth/EditProfile'
+import ChangePassword from '../components/Auth/ChangePassword'
+import AppWeb from '../components/Auth/AppWeb'
+import EmailSms from '../components/Auth/EmailSms'
+import PushAlarm from '../components/Auth/PushAlarm'
+import ContactManagement from '../components/Auth/ContactManagement'
+import Personalnformationsecurity from '../components/Auth/PersonalnformationSecurity'
 
 function Myprofilesetting() {
 
@@ -58,13 +64,17 @@ function Myprofilesetting() {
                     </div>
                 </div>
                 {
-                    currentTab === 0 ? <EditProfile/> :
-                    <div style={{ width: "710px", height: "830px", border: "0.5px solid rgb(210, 210, 210)", borderLeft: "none" }}>234</div>
-
+                    currentTab === 0 ? <EditProfile /> :
+                        currentTab === 1 ? <ChangePassword /> :
+                            currentTab === 2 ? <AppWeb /> :
+                                currentTab === 3 ? <EmailSms /> :
+                                    currentTab === 4 ? <PushAlarm /> :
+                                        currentTab === 5 ? <ContactManagement /> :
+                                            <Personalnformationsecurity />
                 }
             </div>
         </div>
     )
 }
 
-export default Myprofilesetting
+export default Myprofilesetting 
