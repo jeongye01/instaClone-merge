@@ -1,6 +1,6 @@
 import React , {useRef,useState,useEffect} from 'react'
 import { Modal } from 'react-bootstrap'
-import { authService } from '../../fbase'
+import { authService } from '../../../fbase'
 import {HiOutlineArrowLeft} from 'react-icons/hi'
 import {GoLocation} from 'react-icons/go'
 import {RiArrowDownSLine,RiArrowUpSLine} from 'react-icons/ri'
@@ -9,8 +9,8 @@ import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button,Switch } from 'antd';
-import {storageService,databaseService} from '../../fbase';
-import firebase from '../../fbase'
+import {storageService,databaseService} from '../../../fbase';
+import firebase from '../../../fbase'
 
 
 interface IProps {

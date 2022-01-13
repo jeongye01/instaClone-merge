@@ -19,7 +19,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Button,Switch } from 'antd';
 import {storageService,databaseService} from '../../fbase';
 import firebase from '../../fbase'
-import FileUpload from './FileUpload';
+import FileUpload from './NavbarComponent/FileUpload';
 
 function NavbarComponent() {
     const [showUploadModal, setShowUploadModal] = useState(false);
