@@ -1,6 +1,6 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {RootState} from '../../redux/_reducers'
+import {RootState} from '../../../redux/_reducers'
 import {Button} from 'antd'
 
 function ChangePassword() {

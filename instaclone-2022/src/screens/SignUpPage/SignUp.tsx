@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import {useForm,SubmitHandler } from "react-hook-form";
-import {authService,faceBookLogin} from "../fbase";
+import {authService,faceBookLogin} from "../../fbase";
 import {Link, useHistory} from "react-router-dom";
 import styled from "styled-components";
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AuthLayout from '../components/Auth/AuthLayout';
-import TopBox from '../components/Auth/TopBox';
-import { Input,Submit } from '../components/Auth/Input';
-import BottomBox,{BottomLink} from '../components/Auth/BottomBox';
-import Separator from '../components/Auth/Separator';
-import FormError from '../components/Auth/FormError';
+import AuthLayout from '../../components/Auth/AuthLayout';
+import TopBox from '../../components/Auth/TopBox';
+import { Input,Submit } from '../../components/Auth/Input';
+import BottomBox,{BottomLink} from '../../components/Auth/BottomBox';
+import Separator from '../../components/Auth/Separator';
+import FormError from '../../components/Auth/FormError';
 
 
 const JoinMessage = styled.div`

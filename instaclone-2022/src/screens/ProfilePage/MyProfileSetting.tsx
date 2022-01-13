@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
-import NavbarComponent from '../components/Auth/Navbar'
-import EditProfile from '../components/Auth/EditProfile'
-import ChangePassword from '../components/Auth/ChangePassword'
-import AppWeb from '../components/Auth/AppWeb'
-import EmailSms from '../components/Auth/EmailSms'
-import PushAlarm from '../components/Auth/PushAlarm'
-import ContactManagement from '../components/Auth/ContactManagement'
-import Personalnformationsecurity from '../components/Auth/PersonalnformationSecurity'
+import NavbarComponent from '../common/Navbar'
+import EditProfile from './MyProfileSettingComponent/EditProfile'
+import ChangePassword from './MyProfileSettingComponent/ChangePassword'
+import AppWeb from './MyProfileSettingComponent/AppWeb'
+import EmailSms from './MyProfileSettingComponent/EmailSms'
+import PushAlarm from './MyProfileSettingComponent/PushAlarm'
+import ContactManagement from './MyProfileSettingComponent/ContactManagement'
+import Personalnformationsecurity from './MyProfileSettingComponent/PersonalnformationSecurity'
 
 function Myprofilesetting() {
 

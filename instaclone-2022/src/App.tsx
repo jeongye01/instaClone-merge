@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "./Router";
-import Footer from "./components/Auth/Footer"
+import Footer from "./screens/common/Footer"
 
 
 function App() {

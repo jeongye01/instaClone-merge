@@ -1,9 +1,9 @@
 import { BrowserRouter , Switch, Route } from "react-router-dom";
 import { useState,useEffect } from 'react';
-import Login from "./screens/Login";
-import SignUp from "./screens/SignUp";
-import MyProfile from "./screens/MyProfile"
-import MyprofileSetting from "./screens/MyProfileSetting";
+import Login from "./screens/LoginPage/Login";
+import SignUp from "./screens/SignUpPage/SignUp";
+import MyProfile from "./screens/ProfilePage/MyProfile"
+import MyprofileSetting from "./screens/ProfilePage/MyProfileSetting";
 import { authService } from "./fbase";
 import { setUser, clearUser } from './redux/_actions/user_actions'
 import { useDispatch } from 'react-redux';

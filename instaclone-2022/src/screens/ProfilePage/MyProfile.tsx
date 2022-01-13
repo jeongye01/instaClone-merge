@@ -3,18 +3,18 @@ import { Button } from 'antd';
 import { Link } from "react-router-dom";
 import {BsInfoCircle} from  'react-icons/bs'
 import {Modal} from 'react-bootstrap'
-import { authService } from '../fbase'
+import { authService } from '../../fbase'
 import "antd/dist/antd.css";
 import "./myprofile.css"
 import {AiOutlineTable} from 'react-icons/ai'
 import {RiVideoLine} from 'react-icons/ri'
 import {HiOutlinePhotograph} from'react-icons/hi'
-import NavbarComponent from '../components/Auth/Navbar'
-import Post from '../components/Auth/Post'
-import Photo from '../components/Auth/Photo'
-import Video from '../components/Auth/Video'
+import NavbarComponent from '../common/Navbar'
+import Post from './MyprofileComponent/Post'
+import Photo from './MyprofileComponent/Photo'
+import Video from './MyprofileComponent/Video'
 import {useSelector} from 'react-redux'
-import {RootState} from '../redux/_reducers'
+import {RootState} from '../../redux/_reducers'
 
 
 

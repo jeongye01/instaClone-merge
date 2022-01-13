@@ -1,14 +1,6 @@
 import React , {useRef,useState,useEffect} from 'react'
-import { Nav, Navbar, Container, Form, FormControl, NavDropdown,Modal } from 'react-bootstrap'
-import { Link } from "react-router-dom";
+import { Modal } from 'react-bootstrap'
 import { authService } from '../../fbase'
-import { GrHomeRounded } from 'react-icons/gr'
-import {FaRegPaperPlane} from 'react-icons/fa'
-import {FiPlusSquare}from 'react-icons/fi'
-import {GrCompass,GrPowerCycle} from 'react-icons/gr'
-import {AiOutlineHeart,AiOutlineSave} from 'react-icons/ai'
-import {CgProfile} from 'react-icons/cg'
-import {FiSettings} from 'react-icons/fi'
 import {HiOutlineArrowLeft} from 'react-icons/hi'
 import {GoLocation} from 'react-icons/go'
 import {RiArrowDownSLine,RiArrowUpSLine} from 'react-icons/ri'
@@ -20,8 +12,13 @@ import { Button,Switch } from 'antd';
 import {storageService,databaseService} from '../../fbase';
 import firebase from '../../fbase'
 
-function NavbarComponent() {
-    const [showUploadModal, setShowUploadModal] = useState(false);
+
+interface IProps {
+    showUploadModal:boolean;
+    handleCloseUploadModal:()=>void
+}
+
+function FileUpload({showUploadModal,handleCloseUploadModal}: IProps ){
     const fileUploadRef = useRef<HTMLInputElement>(null);
     const [userUid,setUserUid] = useState("")
     const [userName,setUserName] = useState("")
@@ -53,17 +50,7 @@ function NavbarComponent() {
         })
     }, []);
 
-    const handleShowUploadModal = () => setShowUploadModal(true);
-    const handleCloseUploadModal = () => {
-        setFileURL("")
-        setModalSize({ width: "760px",marginLeft:"580px"})
-        setShowUploadModal(false);    
-        setDescription("")
-        setLocation("")
-        setReplacedText("")
-        setCommentOff(false)
-        setFileType("")
-    }
+
     const handleAccessibilitySize = () => {
         if(accessibilitySize.height==="45px"){
             setAccessibilitySize({ height: "190px", borderBottom: "1px solid rgb(214, 216, 206)"})
@@ -89,10 +76,6 @@ function NavbarComponent() {
         }
     }
 
-
-    const handleLogout = () => { //로그아웃
-        authService.signOut()
-    }
     const handleOpenFileUpload = () => {
         fileUploadRef.current && fileUploadRef.current.click()
     }
@@ -154,31 +137,8 @@ function NavbarComponent() {
         return file
     }
 
-
     return (
-        <div style={{ border: "0.5px solid rgb(200, 200, 200)",backgroundColor:"white" }}>
-            <Container style={{ display: 'flex', justifyContent: 'center', margin: 'auto', marginLeft: '470px', backgroundColor: 'white',marginTop: '5px',height:"53px" }}>
-                <Navbar.Brand><Link to="/"><img src="img/instaLogo.png" style={{marginTop:"5px"}}/></Link></Navbar.Brand>
-                <Form className="d-flex" style={{ width: '310px', marginTop:'7px' , marginLeft: '210px' , height: '40px'  }}>
-                    <FormControl type="search" placeholder="검색" className="me-5" aria-label="Search" style={{backgroundColor:"rgb(236, 236, 236)",marginBottom:"5px", borderRadius:"6px"}}/>
-                </Form>
-                <Nav className="me-auto" style={{ margin:'5px 0 0 30px' }}>
-                    <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><GrHomeRounded size="23" color='black' /></Link></Nav.Link>
-                    <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><FaRegPaperPlane size="23" color='black' /></Link></Nav.Link>
-                    <Nav.Link style={{ marginRight: "-10px" }} onClick={handleShowUploadModal}><FiPlusSquare size="25" color='black' /></Nav.Link>
-                    <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><GrCompass size="25" color='black' /></Link></Nav.Link>
-                    <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><AiOutlineHeart size="25" color='black' /></Link></Nav.Link>
-                    <Nav.Link style={{ marginRight: "-10px" }}><Link to=""><CgProfile size="25" color='black' /></Link></Nav.Link>
-                    <NavDropdown title="" id="basic-nav-dropdown" style={{marginLeft:"-35px"}}>
-                            <NavDropdown.Item style={{ fontSize: "13px", height: "30px" }}><Link style={{ color: "black" }} to="/"><CgProfile style={{ marginTop: '-3px' }} size="17" color='black' />&nbsp;&nbsp;&nbsp;프로필</Link></NavDropdown.Item>
-                            <NavDropdown.Item style={{ fontSize: "13px", height: "30px" }}><Link style={{ color: "black" }} to="/"><AiOutlineSave style={{ marginTop: '-3px' }} size="17" />&nbsp;&nbsp;&nbsp;저장됨</Link></NavDropdown.Item>
-                            <NavDropdown.Item style={{ fontSize: "13px", height: "30px" }}><Link style={{ color: "black" }} to="/"><FiSettings style={{ marginTop: '-3px' }} size="17" />&nbsp;&nbsp;&nbsp;설정</Link></NavDropdown.Item>
-                            <NavDropdown.Item style={{ fontSize: "13px", height: "30px" }}><Link style={{ color: "black" }} to="/"><GrPowerCycle style={{ marginTop: '-3px' }} size="17" />&nbsp;&nbsp;&nbsp;계정 전환</Link></NavDropdown.Item>
-                            <NavDropdown.Divider />
-                        <NavDropdown.Item style={{ fontSize: "13px" }} onClick={handleLogout}>로그아웃</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-            </Container>
+        <div>
             <Modal size="xl" centered show={showUploadModal} onHide={handleCloseUploadModal} style={ModalSize}>
                 <div style={{ height: '790px', borderRadius: '30px' }}>
                     {
@@ -187,49 +147,51 @@ function NavbarComponent() {
                                 <div style={{ height: "45px", borderBottom: "1px solid rgb(214, 216, 206)", paddingTop: "10px", fontWeight: "550", fontSize: "16px" }}>
                                     <HiOutlineArrowLeft size={25} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={handleCloseUploadModal} />
                                     <span style={{ marginLeft: "440px", color: "rgb(53, 52, 52)" }}>새 게시물 만들기</span>
-                                    <button onClick={handleSubmit}  style={{ color: "rgb(30, 140, 230)", marginLeft: "380px", backgroundColor: "white", fontWeight: "bold", border: "1px solid white" }}
+                                    <button onClick={handleSubmit} style={{ color: "rgb(30, 140, 230)", marginLeft: "380px", backgroundColor: "white", fontWeight: "bold", border: "1px solid white" }}
                                     >공유하기</button></div>
                                 <div style={{ display: "flex" }}>
                                     {
-                                        fileType ==="video/mp4" ? <video src={fileURL} width={760} controls /> 
-                                        : <img src={fileURL} height={400} width={760} style={{ marginTop: "150px" }} />
+                                        fileType === "video/mp4" ? <video src={fileURL} width={760} controls />
+                                            : <img src={fileURL} height={400} width={760} style={{ marginTop: "150px" }} />
                                     }
                                     {/* <img src={fileURL} height={400} width={760} style={{ marginTop: "150px" }} /> */}
                                     <div style={{ borderLeft: "1px solid rgb(200, 200, 200)", height: "745px", width: "350px" }}>
                                         <div style={{ height: "270px", borderBottom: "1px solid rgb(214, 216, 206)" }}>
-                                            <img src="img/profile_image.jpg" width={30} style={{margin:"15px 15px"}} /><span style={{fontWeight:"bold"}}>{userName}</span>
-                                            <textarea className="uploadTextArea" placeholder="문구 입력..." style={{display:"block",height:"170px",width:"340px",border:"none",fontSize:"16px",paddingLeft:"15px",fontWeight:"bold"}} 
-                                            onChange={(e)=>setDescription(e.target.value)}></textarea>
+                                            <img src="img/profile_image.jpg" width={30} style={{ margin: "15px 15px" }} /><span style={{ fontWeight: "bold" }}>{userName}</span>
+                                            <textarea className="uploadTextArea" placeholder="문구 입력..." style={{ display: "block", height: "170px", width: "340px", border: "none", fontSize: "16px", paddingLeft: "15px", fontWeight: "bold" }}
+                                                onChange={(e) => setDescription(e.target.value)}></textarea>
                                         </div>
                                         <div style={{ height: "45px", borderBottom: "1px solid rgb(214, 216, 206)" }}>
-                                            <input type="text" placeholder="위치 추가" style={{ padding: "8px 15px", fontSize: "16px" }}onChange={(e)=>setLocation(e.target.value)} />
-                                            <GoLocation style={{marginLeft:"100px"}}/>
+                                            <input type="text" placeholder="위치 추가" style={{ padding: "8px 15px", fontSize: "16px" }} onChange={(e) => setLocation(e.target.value)} />
+                                            <GoLocation style={{ marginLeft: "100px" }} />
                                         </div>
                                         <div style={accessibilitySize} >
-                                            <div style={{ padding: "8px 14px", fontSize: "16px" ,cursor:"pointer"}} onClick={handleAccessibilitySize}>
-                                                접근성 {acessibilityArrow ? <RiArrowDownSLine size={25} style={{marginLeft:"232px"}}/> : <RiArrowUpSLine size={25} style={{marginLeft:"232px"}}/> }
+                                            <div style={{ padding: "8px 14px", fontSize: "16px", cursor: "pointer" }} onClick={handleAccessibilitySize}>
+                                                접근성 {acessibilityArrow ? <RiArrowDownSLine size={25} style={{ marginLeft: "232px" }} /> : <RiArrowUpSLine size={25} style={{ marginLeft: "232px" }} />}
                                             </div>
                                             <div style={accessibilityToggle}>
                                                 <div>대체 텍스트는 시각적으로 사진을 보기 어려운 사람들에게 사진 내용을 설명하는 텍스트입니다. 대체 텍스트는 회원님의 사진에 대해 자동으로 생성되며,
                                                     직접 입력할 수도 있습니다.</div>
                                                 <div style={{ marginTop: "8px" }} >
                                                     {
-                                                       fileType ==="video/mp4" ? <video src={fileURL}  width={55} />
-                                                       : <img src={fileURL} height={41} width={55}  />
+                                                        fileType === "video/mp4" ? <video src={fileURL} width={55} />
+                                                            : <img src={fileURL} height={41} width={55} />
                                                     }
-                                                    <input type="text" placeholder="대체 텍스트 입력" style={{ padding: "20px 0 20px 10px", marginLeft: "10px", height: "1px", fontSize: "16px", border: "1px solid rgb(214, 216, 206)", 
-                                                    borderRadius: "5px", width: "232px" }} onChange={(e)=>setReplacedText(e.target.value)}/>
+                                                    <input type="text" placeholder="대체 텍스트 입력" style={{
+                                                        padding: "20px 0 20px 10px", marginLeft: "10px", height: "1px", fontSize: "16px", border: "1px solid rgb(214, 216, 206)",
+                                                        borderRadius: "5px", width: "232px"
+                                                    }} onChange={(e) => setReplacedText(e.target.value)} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div style={advancedSettingSize}  >
-                                            <div style={{ padding: "8px 15px", fontSize: "16px",cursor:"pointer" }} onClick={handleAdvancedSettingSize}>
-                                                고급 설정{advancedSettingArrow ? <RiArrowDownSLine size={25} style={{marginLeft:"215px"}}/> : <RiArrowUpSLine size={25} style={{marginLeft:"215px"}}/> }
+                                            <div style={{ padding: "8px 15px", fontSize: "16px", cursor: "pointer" }} onClick={handleAdvancedSettingSize}>
+                                                고급 설정{advancedSettingArrow ? <RiArrowDownSLine size={25} style={{ marginLeft: "215px" }} /> : <RiArrowUpSLine size={25} style={{ marginLeft: "215px" }} />}
                                             </div>
                                             <div style={advancedSettingToggle}>
                                                 <span>댓글 기능 해제</span>
-                                                <Switch defaultChecked style={{marginLeft:"150px"}}onChange={(prev)=>setCommentOff(!prev)}/>
-                                                <div style={{paddingTop:"10px",fontSize:"12px",color:"gray"}}>나중에 게시물 상단의 메뉴(...)에서 이 설정을 변경할 수 있습니다.</div>
+                                                <Switch defaultChecked style={{ marginLeft: "150px" }} onChange={(prev) => setCommentOff(!prev)} />
+                                                <div style={{ paddingTop: "10px", fontSize: "12px", color: "gray" }}>나중에 게시물 상단의 메뉴(...)에서 이 설정을 변경할 수 있습니다.</div>
                                             </div>
                                         </div>
                                     </div>
@@ -249,13 +211,8 @@ function NavbarComponent() {
                     }
                 </div>
             </Modal>
-
-
         </div>
     )
 }
 
-//https://react-bootstrap.netlify.app/components/navbar
-//https://react-icons.github.io/react-icons/search?q=heart
-export default NavbarComponent
-
+export default FileUpload

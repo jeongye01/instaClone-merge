@@ -1,8 +1,8 @@
 //import { off } from 'process';
 import React,{useState,useEffect} from 'react'
-import { databaseService } from '../../fbase';
+import { databaseService } from '../../../fbase';
 import {useSelector} from 'react-redux'
-import {RootState} from '../../redux/_reducers'
+import {RootState} from '../../../redux/_reducers'
 
 
 
