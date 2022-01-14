@@ -5,7 +5,7 @@ import {BsInfoCircle} from  'react-icons/bs'
 import {Modal} from 'react-bootstrap'
 import { authService } from '../../fbase'
 import "antd/dist/antd.css";
-import "./myprofile.css"
+import "./MyProfile.css"
 import {AiOutlineTable} from 'react-icons/ai'
 import {RiVideoLine} from 'react-icons/ri'
 import {HiOutlinePhotograph} from'react-icons/hi'

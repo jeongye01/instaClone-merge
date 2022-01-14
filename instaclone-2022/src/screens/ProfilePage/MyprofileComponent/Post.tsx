@@ -4,10 +4,6 @@ import { databaseService } from '../../../fbase';
 import {useSelector} from 'react-redux'
 import {RootState} from '../../../redux/_reducers'
 
-
-
-
-
 function Post(){
     const user = useSelector((state:RootState) => state.user.currentUser)
     const fileDatabase = databaseService.ref("fileUpload")
@@ -38,7 +34,6 @@ function Post(){
             }
         }
         )
-
 
     return (
         <div>

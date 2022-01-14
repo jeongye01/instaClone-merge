@@ -7,6 +7,9 @@ import EmailSms from './MyProfileSettingComponent/EmailSms'
 import PushAlarm from './MyProfileSettingComponent/PushAlarm'
 import ContactManagement from './MyProfileSettingComponent/ContactManagement'
 import Personalnformationsecurity from './MyProfileSettingComponent/PersonalnformationSecurity'
+import LoginActivity from './MyProfileSettingComponent/LoginActivity'
+import InstagramEmail from './MyProfileSettingComponent/InstagramEmail'
+import Help from './MyProfileSettingComponent/Help'
 
 function Myprofilesetting() {
 
@@ -70,7 +73,10 @@ function Myprofilesetting() {
                                 currentTab === 3 ? <EmailSms /> :
                                     currentTab === 4 ? <PushAlarm /> :
                                         currentTab === 5 ? <ContactManagement /> :
-                                            <Personalnformationsecurity />
+                                            currentTab === 6 ? <Personalnformationsecurity /> :
+                                                currentTab === 7 ? <LoginActivity /> :
+                                                    currentTab === 8 ? <InstagramEmail /> :
+                                                        <Help />
                 }
             </div>
         </div>

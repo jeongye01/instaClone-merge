@@ -1,4 +1,4 @@
-import { BrowserRouter , Switch, Route } from "react-router-dom";
+import { BrowserRouter , Switch, Route,useHistory } from "react-router-dom";
 import { useState,useEffect } from 'react';
 import Login from "./screens/LoginPage/Login";
 import SignUp from "./screens/SignUpPage/SignUp";
@@ -9,9 +9,10 @@ import { setUser, clearUser } from './redux/_actions/user_actions'
 import { useDispatch } from 'react-redux';
 
 function Router() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [init, setInit] = useState(false);
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -20,8 +21,11 @@ function Router() {
         setIsLoggedIn(true);
         
       } else {
-        dispatch(clearUser()) //리덕스에 user정보 지워주기
+        setInit(true)
         setIsLoggedIn(false)
+        console.log("로그아웃")
+        dispatch(clearUser()) //리덕스에 user정보 지워주기
+        
       }
       setInit(true);
     })
@@ -31,18 +35,17 @@ function Router() {
     <BrowserRouter>
       <Switch>
         <>
-        {init?
-          <Route exact path="/" >
-            {isLoggedIn ? <MyProfile /> : <Login />}
-          </Route> :null}
+          {init ?
+            <Route exact path="/" >
+              {isLoggedIn ? <MyProfile /> : <Login />}
+            </Route> : null}
+          <Route path="/myprofile-setting" exact>
+            {isLoggedIn ? <MyprofileSetting /> : <Login />}
+          </Route>
           {!isLoggedIn ? (
             <Route path="/sign-up" exact>
               <SignUp />
             </Route>
-          ) : null}
-          {isLoggedIn ?( <Route path="/myprofile-setting" exact>
-              <MyprofileSetting />
-          </Route>
           ) : null}
           {!isLoggedIn ? (<Route path="/log-in" exact>
             <Login />
@@ -51,7 +54,7 @@ function Router() {
         </>
       </Switch>
     </BrowserRouter>
-  
+
   );
 }
 export default Router;
