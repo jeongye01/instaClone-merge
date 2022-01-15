@@ -40,6 +40,7 @@ export const faceBookLogin = async () => {
 }
 export const storageService = firebase.storage();
 export const databaseService = firebase.database();
+export const firestoreService = firebase.firestore();
 export default firebase
 
 

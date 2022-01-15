@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import { Button } from 'antd';
 import { Link } from "react-router-dom";
 import {BsInfoCircle} from  'react-icons/bs'
@@ -50,8 +50,8 @@ function MyprofilePage() {
                     <div style={{ cursor: 'pointer', height: '30px', width: '100px', marginTop: '15px', marginLeft: '10px', fontSize: '13px' }} onClick={() => {setTab(2)}}><RiVideoLine size={15} />&nbsp;동영상</div>
                 </div>
                 {
-                    tab===0 ? <Post/> : 
-                    tab===1 ? <Photo/> : <Video/>
+                    tab===0 ? <Post key={user && user.uid} userName={user.displayName}/> : 
+                    tab===1 ? <Photo key={user && user.uid}/> : <Video key={user && user.uid}/>
                 }
                 <Modal className="modal" show={show} onHide={handleClose} style={{ marginTop: '230px', marginLeft: '750px', width: '390px' }}>
                     <div style={{ borderRadius: "35px" }}>

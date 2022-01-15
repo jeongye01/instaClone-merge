@@ -9,7 +9,7 @@ import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button,Switch } from 'antd';
-import {storageService,databaseService} from '../../../fbase';
+import {storageService,firestoreService} from '../../../fbase';
 import firebase from '../../../fbase'
 
 
@@ -35,7 +35,6 @@ function FileUpload({showUploadModal,handleCloseUploadModal}: IProps ){
     const [replacedText,setReplacedText] = useState("")
     const [commentOff,setCommentOff] = useState(false)
     const fileStorage = storageService.ref()
-    const fileDatabase = databaseService.ref("fileUpload")
     const [fileType,setFileType] = useState("")
 
 
@@ -105,9 +104,8 @@ function FileUpload({showUploadModal,handleCloseUploadModal}: IProps ){
 
     //db에 업로드파일 저장
     const handleSubmit = async()=>{
-        console.log('a')
         try{
-            await fileDatabase.child(userUid).push().set(createFile(fileURL))
+            await firestoreService.collection("posts").add(createFile(fileURL))
             handleCloseUploadModal()
         }catch(err){
             console.log(err)

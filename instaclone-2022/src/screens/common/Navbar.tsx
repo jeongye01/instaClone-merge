@@ -9,16 +9,10 @@ import {GrCompass,GrPowerCycle} from 'react-icons/gr'
 import {AiOutlineHeart,AiOutlineSave} from 'react-icons/ai'
 import {CgProfile} from 'react-icons/cg'
 import {FiSettings} from 'react-icons/fi'
-import {HiOutlineArrowLeft} from 'react-icons/hi'
-import {GoLocation} from 'react-icons/go'
-import {RiArrowDownSLine,RiArrowUpSLine} from 'react-icons/ri'
 import 'bootstrap/js/dist/modal'; 
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button,Switch } from 'antd';
-import {storageService,databaseService} from '../../fbase';
-import firebase from '../../fbase'
 import FileUpload from './NavbarComponent/FileUpload';
 
 function NavbarComponent() {
@@ -80,7 +74,5 @@ function NavbarComponent() {
     )
 }
 
-//https://react-bootstrap.netlify.app/components/navbar
-//https://react-icons.github.io/react-icons/search?q=heart
 export default NavbarComponent
 
