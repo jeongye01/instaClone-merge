@@ -8,6 +8,10 @@ import {AiOutlineHeart} from 'react-icons/ai'
 import {MdOutlineChatBubbleOutline} from 'react-icons/md'
 import {AiOutlineSmile} from 'react-icons/ai'
 import {FiMoreHorizontal} from 'react-icons/fi'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../../redux/_reducers'
+import firebase from '../../../fbase'
+import moment from 'moment'; //날짜 라이브러리
 
 interface IProps {
     userName:string
@@ -19,6 +23,13 @@ function Post({userName}:IProps){
     const [posts, setPosts] = useState<Array<any>>([]);
     const [show, setShow] = useState(false);
     const [fileUrl , setFileUrl] = useState("");
+    const [comment,setComment] = useState("")
+    const [postId,setPostId] = useState("")
+    const currentUser = useSelector((state:RootState) => state.user.currentUser)
+    const [allComment,setAllComment] = useState<Array<any>>([]);
+    const [showModalInPost,setShowModalInPost] = useState(false);
+    const handleCloseModalInPost = () => setShowModalInPost(false);
+    const handleShowModalInPost = () => setShowModalInPost(true);
     
 
     useEffect(() => {
@@ -43,7 +54,7 @@ function Post({userName}:IProps){
         posts.map(post => {
             switch (post.fileType) {
                 case "image/jpeg": {
-                    return <div style={{ width: "290px", height: "300px",position:"relative",cursor:"pointer"}} onClick={openModal(post.fileUrl)}>
+                    return <div style={{ width: "290px", height: "300px",position:"relative",cursor:"pointer"}} onClick={openModal(post)}>
                         <div className="imgOverLay"></div>
                         <img src={post.fileUrl} width={290} height={300} />
                     </div>
@@ -58,10 +69,76 @@ function Post({userName}:IProps){
         }
         )
 
-    const openModal = (fileUrl:string)=>(event:React.MouseEvent) =>{
+    const openModal = (post:any)=>(event:React.MouseEvent) =>{
         setShow(true)
-        setFileUrl(fileUrl)
+        setFileUrl(post.fileUrl)
+        setPostId(post.id)
+        addCommentListeners(post.id)
     }
+
+
+    //댓글작성
+    const onSubmit = async(e:any)=>{
+        e.preventDefault();
+        try{
+            await firestoreService.collection("comment").add(createMessage(postId))
+            setComment("")
+        }catch(err){
+            console.log(err)
+            setComment("")
+        }
+    }
+
+
+    const createMessage = (postId:string)=> {
+        const today = new Date()
+        const yearMonthDay = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}` //메시지 전송 경과시간을위해
+        const hourminutesecond = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`//메시지 전송 경과시간을위해
+        const message = {
+            timestamp: today,
+            content:comment,
+            yearMonthDay:yearMonthDay,
+            hourminutesecond:hourminutesecond,
+            postId:postId,
+            writer:{
+                id: currentUser.uid,
+                name: currentUser.displayName
+            }
+        }
+        return message
+    }
+
+    //timestamp 시간으로 댓글 가져오기
+    //https://firebase.google.com/docs/firestore/query-data/order-limit-data?hl=ko#web-version-8
+    const addCommentListeners = (postId: string) => {
+        try {
+            firestoreService.collection("comment").orderBy("timestamp").onSnapshot((snapshot) => {
+                const commentArray = snapshot.docs.map(doc =>({
+                     id: doc.id,
+                  ...doc.data()
+                }));
+                setAllComment(commentArray)
+             });
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    //게시물삭제
+    const handleDeletePost =  async()=>{
+        try{
+            await firestoreService.collection("posts").doc(postId).delete()
+            setShow(false)
+            setPostId("")
+            setFileUrl("")
+        }catch(err){
+            console.log(err)
+            setShow(false)
+            setPostId("")
+            setFileUrl("")
+        }
+    }
+    //https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ko
 
     return (
         <div>
@@ -88,7 +165,7 @@ function Post({userName}:IProps){
                 dialogClassName="modal-90w"
                 aria-labelledby="example-custom-modal-styling-title"
             >
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex",overflowY:"scroll" }}>
                     <div style={{ width: "920px", height: "920px", backgroundColor: "black" }}>
                         <img src={fileUrl} height={515} width={920} style={{ marginTop: "200px" }} />
                     </div>
@@ -96,26 +173,79 @@ function Post({userName}:IProps){
                         <div style={{height:"60px" ,display: "flex", borderBottom: "1px solid rgb(230, 230, 230)",paddingBottom:"15px" }}>
                             <img src="img/profile_image.jpg" height={32} style={{ margin: "15px 0 0 17px" }} />
                             <div style={{ margin: "20px 0 0 13px" }}>{userName}</div>
-                            <FiMoreHorizontal size={20} style={{ margin: "20px 0 0 360px" }} />
+                            <FiMoreHorizontal size={20} style={{ margin: "20px 0 0 360px",cursor:"pointer" }} onClick={handleShowModalInPost}/>
                         </div>
-                        <div style={{ width: "100%", height: "697px", borderBottom: "1px solid rgb(230, 230, 230)" }}>
-                            123
+                        <div style={{ width: "100%", height: "685px", borderBottom: "1px solid rgb(230, 230, 230)",overflowY:"scroll" }}>
+                            {
+                                allComment.map(comment =>
+                                    comment.postId === postId &&
+                                    <div style={{ height: "60px", display: "flex", margin: "10px 0 10px 0" }}>
+                                        <img src="img/profile_image.jpg" height={32} style={{ margin: "15px 0 0 17px" }} />
+                                        <div style={{ margin: "10px 0 0 13px" }}>
+                                            <div><span style={{ fontWeight: "bold" }}>{comment.writer.name}&nbsp;</span>{comment.content}</div>
+                                            <span style={{color:"gray",fontSize:"12px"}}>{moment(`${comment.yearMonthDay} ${comment.hourminutesecond}`).fromNow()}</span>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
-                        <div style={{height: "100px",margin:"15px 0 0 0", borderBottom: "1px solid rgb(230, 230, 230)"}}>
-                            <AiOutlineHeart size={29} style={{marginRight:"15px",marginLeft:"15px"}}/>  
-                            <MdOutlineChatBubbleOutline size={26} style={{marginRight:"15px"}}/>
-                            <FaRegPaperPlane size={22} style={{marginBottom:"5px"}}/>
-                            <img style={{marginLeft:"336px"}}src="img/save.png"/>
+                        <div style={{height: "90px",margin:"15px 0 0 0", borderBottom: "1px solid rgb(230, 230, 230)"}}>
+                            <AiOutlineHeart className="heart" size={29} style={{marginRight:"15px",marginLeft:"15px"}}/>  
+                            <MdOutlineChatBubbleOutline className="bubble" size={26} style={{marginRight:"15px"}}/>
+                            <FaRegPaperPlane className="paper" size={22} style={{marginBottom:"5px"}}/>
+                            <img className="save" style={{marginLeft:"336px"}}src="img/save.png"/>
                             <div style={{margin:"10px 0 0 16px"}}>가장 먼저 <span style={{fontWeight:"bold"}}>좋아요</span>를 눌러보세요</div>
                             <div style={{margin:"5px 0 0 16px", fontSize: "10px", color: "gray" }}>5일 전</div>
                         </div>
-                        <div style={{ margin: "12px 0 0 16px" }}>
+                        <div style={{ margin: "12px 0 0 16px",display: 'flex' }}>
                             <AiOutlineSmile  size={27} style={{marginRight:"13px"}}/>
-                            <input type="text" placeholder="댓글 달기..." />
+                            <form onSubmit={onSubmit}>
+                            <input type="text" placeholder="댓글 달기..." onChange={(e)=>{setComment(e.target.value)}} value = {comment}/>
                             <button style={{ color: "rgb(30, 140, 230)", marginLeft: "230px", backgroundColor: "white", fontWeight: "bold", border: "1px solid white" }}>게시</button>
+                            </form>
                         </div>
                     </div>
                 </div>
+                <Modal className="modal" show={showModalInPost} onHide={handleCloseModalInPost} style={{ marginTop: '310px', marginLeft: '760px', width: '400px' }}>
+                    <div style={{ borderRadius: "35px" }}>
+                        <div className='modal1' style={{
+                            height: "47px", borderBottom: "1px solid rgb(220, 220, 220)",
+                            textAlign: "center", paddingTop: "15px", cursor: "pointer", color: "red", fontWeight: "bold"
+                        }}  onClick={handleDeletePost}>
+                            삭제
+                        </div>
+                        <div className='modal2' style={{
+                            height: "47px", borderBottom: "1px solid rgb(220, 220, 220)",
+                            textAlign: "center", paddingTop: "15px", cursor: "pointer"
+                        }}>
+                            게시물로 이동
+                        </div>
+                        <div className='modal3' style={{
+                            height: "47px", borderBottom: "1px solid rgb(220, 220, 220)",
+                            textAlign: "center", paddingTop: "15px", cursor: "pointer"
+                        }}>
+                            공유 대상...
+                        </div>
+                        <div className='modal4' style={{
+                            height: "47px", borderBottom: "1px solid rgb(220, 220, 220)",
+                            textAlign: "center", paddingTop: "15px", cursor: "pointer"
+                        }}>
+                            링크 복사
+                        </div>
+                        <div className='modal5' style={{
+                            height: "47px", borderBottom: "1px solid rgb(220, 220, 220)",
+                            textAlign: "center", paddingTop: "15px", cursor: "pointer"
+                        }}>
+                            퍼가기
+                        </div>
+                        <div className='modal10' style={{
+                            height: "45px", textAlign: "center", paddingTop: "10px",
+                            cursor: "pointer"
+                        }} onClick={handleCloseModalInPost}>
+                            취소
+                        </div>
+                    </div>
+                </Modal>
             </Modal>
         </div>
     )
@@ -123,19 +253,3 @@ function Post({userName}:IProps){
 
 export default Post
 
-{/* <Modal.Header closeButton>
-<Modal.Title id="example-custom-modal-styling-title">
-    Custom Modal Styling
-</Modal.Title>
-</Modal.Header>
-<Modal.Body>
-<p>
-    Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-    commodi aspernatur enim, consectetur. Cumque deleniti temporibus
-    ipsam atque a dolores quisquam quisquam adipisci possimus
-    laboriosam. Quibusdam facilis doloribus debitis! Sit quasi quod
-    accusamus eos quod. Ab quos consequuntur eaque quo rem! Mollitia
-    reiciendis porro quo magni incidunt dolore amet atque facilis ipsum
-    deleniti rem!
-</p>
-</Modal.Body> */}

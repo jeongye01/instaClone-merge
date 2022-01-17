@@ -25,3 +25,13 @@
     opacity: 0;
     /* background-color:rgba(22, 22, 22, 0.5); */
 }
+.heart:hover{
+    color: gray;
+
+}
+.bubble:hover{
+    color: gray;
+}
+.paper:hover{
+    color: gray;
+}
